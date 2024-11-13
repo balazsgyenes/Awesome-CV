@@ -155,8 +155,8 @@
 \setbool{acvSectionColorHighlight}{true}
 
 % Awesome section color
-\def\@sectioncolor#1#2#3{%
-  \ifbool{acvSectionColorHighlight}{{\color{awesome}#1#2#3}}{#1#2#3}%
+\newcommand*{\sectioncolor}[1]{%
+  \ifbool{acvSectionColorHighlight}{{\color{awesome}#1}}{#1}
 }
 
 
@@ -181,7 +181,7 @@
 \newcommand*{\headersocialstyle}[1]{{\fontsize{6.8pt}{1em}\headerfont\color{text} #1}}
 \newcommand*{\headerquotestyle}[1]{{\fontsize{9pt}{1em}\bodyfont\itshape\color{darktext} #1}}
 \newcommand*{\footerstyle}[1]{{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
-\newcommand*{\sectionstyle}[1]{{\fontsize{16pt}{1em}\bodyfont\bfseries\color{text}\@sectioncolor #1}}
+\newcommand*{\sectionstyle}[1]{{\fontsize{16pt}{1em}\bodyfont\bfseries\color{text}\sectioncolor{#1}}}
 \newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
 \newcommand*{\paragraphstyle}{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text}}
 
@@ -261,16 +261,7 @@
 
 % Defines writer's mobile (optional)
 % Usage: \mobile{<mobile number>}
-\newcommand*{\mobile}[1]
-{
-  \def\@mobile{#1}
-  \def\@teluri{tel:\@mobile}
-  % Strip unwanted characters
-  \StrDel{\@teluri}{ }[\@teluri]%
-  \StrDel{\@teluri}{-}[\@teluri]%
-  \StrDel{\@teluri}{(}[\@teluri]%
-  \StrDel{\@teluri}{)}[\@teluri]%
-}
+\newcommand*{\mobile}[1]{\def\@mobile{#1}}
 
 % Defines writer's email (optional)
 % Usage: \email{<email address>}
@@ -481,14 +472,14 @@
       \ifthenelse{\isundefined{\@mobile}}%
         {}%
         {%
-          \href{\@teluri}{\faMobile\acvHeaderIconSep\@mobile}%
+          \faPhone*\acvHeaderIconSep\@mobile%
           \setbool{isstart}{false}%
         }%
       \ifthenelse{\isundefined{\@email}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{mailto:\@email}{\faEnvelope\acvHeaderIconSep\@email}%
+          \href{mailto:\@email}{\faEnvelope[regular]\acvHeaderIconSep\@email}%
         }%
       \ifthenelse{\isundefined{\@dateofbirth}}%
         {}%
@@ -507,7 +498,7 @@
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://github.com/\@github}{\faGithubSquare\acvHeaderIconSep\@github}%
+          \href{https://github.com/\@github}{\faGithub\acvHeaderIconSep\@github}%
         }%
       \ifthenelse{\isundefined{\@gitlab}}%
         {}%
@@ -673,6 +664,30 @@
     \ifstrempty{#5}
       {}
       {\multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}} \\}
+  \end{tabular*}%
+}
+
+% Define a publication
+% Usage: \cvpublication{<authors>}{<paper title>}{<venue>}{<year>}
+\newcommand*{\cvpublication}[4]{%
+  \vspace{-2.0mm}
+  \setlength\tabcolsep{0pt}
+  \setlength{\extrarowheight}{0pt}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 1.5cm} R{1.5cm}}
+      \entrytitlestyle{#2} & \entrylocationstyle{#3} \\
+      \entrypositionstyle{#1} & \entrydatestyle{#4}
+  \end{tabular*}%
+}
+
+% Define a project including name, date, and description
+% Usage: \cvproject{<name>}{<date>}{<description>}
+\newcommand*{\cvproject}[3]{%
+  \vspace{-2.0mm}
+  \setlength\tabcolsep{0pt}
+  \setlength{\extrarowheight}{0pt}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4.5cm} R{4.5cm}}
+    \entrytitlestyle{#1} & \entrydatestyle{#2} \\
+    \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#3}}
   \end{tabular*}%
 }
 
