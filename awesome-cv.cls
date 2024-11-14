@@ -667,6 +667,21 @@
   \end{tabular*}%
 }
 
+% Define an education
+% Usage: \cveducation{<institution>}{<degree>}{<grade>}{<location>}{<date>}{<description>}
+\newcommand*{\cveducation}[6]{%
+  \vspace{-2.0mm}
+  \setlength\tabcolsep{0pt}
+  \setlength{\extrarowheight}{0pt}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 10.5cm} L{6.5cm} R{4cm}}
+    \multicolumn{2}{L{\textwidth - 4cm}}{\entrytitlestyle{#2}} & \entrylocationstyle{#4} \\
+    \entrypositionstyle{#1} & \entrypositionstyle{#3} & \entrydatestyle{#5} \\
+    \ifstrempty{#6}
+      {}
+      {\multicolumn{3}{L{\textwidth}}{\descriptionstyle{#6}} \\}
+  \end{tabular*}%
+}
+
 % Define a publication
 % Usage: \cvpublication{<authors>}{<paper title>}{<venue>}{<year>}
 \newcommand*{\cvpublication}[4]{%
